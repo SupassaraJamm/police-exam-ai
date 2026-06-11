@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Police Exam AI</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body{
+    font-family: Arial,sans-serif;
+    max-width:500px;
+    margin:auto;
+    padding:20px;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:5px 0;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+#status{
+    margin-top:15px;
+    font-weight:bold;
+}
+</style>
+
+</head>
+<body>
+
+<h1>Police Exam AI</h1>
+
+<h3>สมัครสมาชิก</h3>
+
+<input id="email" type="email" placeholder="Email">
+
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="signUp()">สมัครสมาชิก</button>
+
+<button onclick="login()">เข้าสู่ระบบ</button>
+
+<button onclick="logout()">ออกจากระบบ</button>
+
+<div id="status"></div>
+
+<script>
+
+const SUPABASE_URL = "https://lonlutrapkxcqlthzzpf.supabase.co/rest/v1/";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxvbmx1dHJhcGt4Y3FsdGh6enBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNDQ3OTksImV4cCI6MjA5NjcyMDc5OX0.cz8Z47RmmpgGLorsYDiMkuRh2zBdorq467yvsNSVTfo";
+
+const client = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+async function signUp(){
+
+    const email =
+    document.getElementById("email").value;
+
+    const password =
+    document.getElementById("password").value;
+
+    const { error } =
+    await client.auth.signUp({
+        email,
+        password
+    });
+
+    document.getElementById("status").innerText =
+    error ? error.message : "สมัครสมาชิกสำเร็จ";
+}
+
+async function login(){
+
+    const email =
+    document.getElementById("email").value;
+
+    const password =
+    document.getElementById("password").value;
+
+    const { error } =
+    await client.auth.signInWithPassword({
+        email,
+        password
+    });
+
+    document.getElementById("status").innerText =
+    error ? error.message : "Login สำเร็จ";
+}
+
+async function logout(){
+
+    await client.auth.signOut();
+
+    document.getElementById("status").innerText =
+    "Logout สำเร็จ";
+}
+
+</script>
+
+</body>
+</html>
